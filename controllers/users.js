@@ -10,12 +10,13 @@ const BadUnique = require("../errors/BadUnique");
 const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getCurrentUser = (req, res, next) => {
-  User.findById(req.user.id)
+  const userId = req.user._id;
+  User.findById(userId)
     .then((user) => {
       if (!user) {
         throw new NotFound("Нет пользователя с таким id");
       }
-      res.send(user);
+      res.status(200).send(user);
     })
     .catch((err) => {
       if (err.name === "CastError") {

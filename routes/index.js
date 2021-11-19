@@ -10,13 +10,13 @@ const userRouter = require("./users");
 const movieRouter = require("./movies");
 const NotFound = require("../errors/NotFound");
 
-router.post("/siginup", validationCreateUser, createUser);
+router.post("/signup", validationCreateUser, createUser);
 router.post("/signin", validationLogin, login);
 router.delete("/signout", signOut);
 
-app.use("/", auth, userRouter);
-app.use("/", auth, movieRouter);
-app.use("*", auth, () => {
+router.use("/", auth, userRouter);
+router.use("/", auth, movieRouter);
+router.use("*", auth, () => {
   throw new NotFound("Роутер не найден");
 });
 
