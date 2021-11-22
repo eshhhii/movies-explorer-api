@@ -1,13 +1,12 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { JWT_SECRET } = require("../utils/config");
 
 const User = require("../models/user");
 const BadRequest = require("../errors/BadRequest");
 const BadAuth = require("../errors/BadAuth");
 const NotFound = require("../errors/NotFound");
 const BadUnique = require("../errors/BadUnique");
-
-const { NODE_ENV, JWT_SECRET } = process.env;
 
 const getCurrentUser = (req, res, next) => {
   const userId = req.user._id;
@@ -96,11 +95,9 @@ const login = (req, res, next) => {
             throw new BadAuth("Неправильный пароль");
           }
           if (isValid) {
-            const token = jwt.sign(
-              { _id: user._id },
-              NODE_ENV === "production" ? JWT_SECRET : "dev-secret",
-              { expiresIn: "7d" }
-            );
+            const token = jwt.sign({ _id: user._id }, JWT_SECRET, {
+              expiresIn: "7d",
+            });
             res
               .cookie("jwt", token, {
                 maxAge: 3600000 * 24 * 7,

@@ -9,11 +9,12 @@ const { limiter } = require("./middlewares/limiter");
 const handleError = require("./middlewares/handleError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const mainRouter = require("./routes/index");
+const { MONGO } = require("./utils/config");
 const { PORT = 3000 } = process.env;
 
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/bitfilmsdb", {
+mongoose.connect(MONGO, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,
