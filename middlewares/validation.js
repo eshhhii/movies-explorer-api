@@ -1,4 +1,5 @@
 const { celebrate, Joi } = require("celebrate");
+const validator = require("validator");
 
 const validatonURL = (value) => {
   const isValid = validator.isURL(value);

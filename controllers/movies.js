@@ -58,7 +58,7 @@ const deleteMovie = (req, res, next) => {
     if (userId !== String(movie.owner)) {
       throw new Forbidden("Недостаточно прав");
     }
-    Card.findOneAndRemove(movieId)
+    Movie.findOneAndRemove(movieId)
       .then((currentMovie) => {
         if (!currentMovie) {
           throw new NotFound("Фильм не найден");
@@ -68,7 +68,7 @@ const deleteMovie = (req, res, next) => {
       .catch((err) => {
         if (err.name === "CastError") {
           throw new BadRequest(
-            "Переданы некорректные данные в методы удалении"
+            "Переданы некорректные данные в методы удалении",
           );
         } else {
           next(err);

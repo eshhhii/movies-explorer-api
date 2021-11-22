@@ -5,11 +5,12 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const helmet = require("helmet");
 const { errors } = require("celebrate");
+const { MONGO } = require("./utils/config");
 const { limiter } = require("./middlewares/limiter");
 const handleError = require("./middlewares/handleError");
 const { requestLogger, errorLogger } = require("./middlewares/logger");
 const mainRouter = require("./routes/index");
-const { MONGO } = require("./utils/config");
+
 const { PORT = 3000 } = process.env;
 
 const app = express();

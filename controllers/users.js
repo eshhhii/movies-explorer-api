@@ -20,7 +20,7 @@ const getCurrentUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === "CastError") {
         throw new BadRequest(
-          "Переданы некорректные данные в методы получения пользователя"
+          "Переданы некорректные данные в методы получения пользователя",
         );
       } else {
         next(err);
@@ -34,18 +34,16 @@ const createUser = (req, res, next) => {
 
   bcrypt
     .hash(password, 10)
-    .then((hash) =>
-      User.create({
-        name,
-        email,
-        password: hash,
-      })
-    )
+    .then((hash) => User.create({
+      name,
+      email,
+      password: hash,
+    }))
     .then((user) => res.status(201).send(user.toJSON()))
     .catch((err) => {
       if (err.name === "ValidationError") {
         throw new BadRequest(
-          "Переданы некорректные данные в методы создания пользователя"
+          "Переданы некорректные данные в методы создания пользователя",
         );
       }
       if (err.name === "MongoServerError" && err.code === 11000) {
@@ -62,13 +60,13 @@ const updateUser = (req, res, next) => {
   User.findByIdAndUpdate(
     userId,
     { email, name },
-    { new: true, runValidators: true }
+    { new: true, runValidators: true },
   )
     .then((user) => res.status(200).send(user))
     .catch((err) => {
       if (err.name === "ValidationError") {
         throw new BadRequest(
-          "Переданы некорректные данные в методы обновления профиля"
+          "Переданы некорректные данные в методы обновления профиля",
         );
       }
       if (err.name === "MongoServerError" && err.code === 11000) {
