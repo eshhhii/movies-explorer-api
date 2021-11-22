@@ -63,12 +63,12 @@ const deleteMovie = (req, res, next) => {
         if (!currentMovie) {
           throw new NotFound("Фильм не найден");
         }
-        return res.status(200).send(movie);
+        return res.status(200).send("Успешно");
       })
       .catch((err) => {
         if (err.name === "CastError") {
           throw new BadRequest(
-            "Переданы некорректные данные в методы удалении",
+            "Переданы некорректные данные в методы удалении"
           );
         } else {
           next(err);
