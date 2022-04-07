@@ -3,8 +3,8 @@ const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 const NotFound = require('../errors/NotFound');
-const Conflict = require('../errors/Conflict');
-const Auth = require('../errors/Auth');
+const BadUnique = require('../errors/BadUnique');
+const BadAuth = require('../errors/BadAuth');
 const {
   ERROR_MESSAGE_USERNOTFOUND,
   ERROR_MESSAGE_AUTHORIZATION,
@@ -36,7 +36,7 @@ const updateUser = (req, res, next) => {
     .then((user) => res.send(user))
     .catch((err) => {
       if (err.code === 11000) {
-        next(new Conflict(ERROR_MESSAGE_UPDATEUSER));
+        next(new BadUnique(ERROR_MESSAGE_UPDATEUSER));
       } else {
         next(err);
       }
@@ -60,7 +60,7 @@ const createUser = (req, res, next) => {
     }))
     .catch((err) => {
       if (err.name === 'MongoError' && err.code === 11000) {
-        throw new Conflict(ERROR_MESSAGE_CREATUSER);
+        throw new BadUnique(ERROR_MESSAGE_CREATUSER);
       }
       throw err;
     })
@@ -77,7 +77,7 @@ const login = (req, res, next) => {
       return res.send({ token });
     })
     .catch(() => {
-      throw new Auth(ERROR_MESSAGE_AUTHORIZATION);
+      throw new BadAuth(ERROR_MESSAGE_AUTHORIZATION);
     })
     .catch(next);
 };
