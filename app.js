@@ -15,10 +15,14 @@ const { CURRENT_MONGO, CURRENT_PORT } = require('./utils/config');
 const mainRouter = require('./routes/index');
 
 const allowedCors = [
-  'localhost:3000',
-  'http://localhost:3000',
-  'localhost:3001',
-  'http://localhost:3001',
+  "localhost:3000",
+  "http://localhost:3000",
+  "localhost:3001",
+  "http://localhost:3001",
+  "https://api.eshhhii-diploma.nomoredomains.rocks",
+  "http://api.eshhhii-diploma.nomoredomains.rocks",
+  "https://eshhhii-diploma.nomoredomains.xyz",
+  "http://eshhhii-diploma.nomoredomains.xyz",
 ];
 
 const limiter = rateLimit(rateLimiter);
