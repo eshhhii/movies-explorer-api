@@ -22,14 +22,14 @@ const validatorURL = (value) => {
 const validationSignIn = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().custom(validatorEmail),
-    password: Joi.string().required(),
+    password: Joi.string().required().min(4),
   }),
 });
 
 const validationSignUp = celebrate({
   body: Joi.object().keys({
     email: Joi.string().required().custom(validatorEmail),
-    password: Joi.string().required(),
+    password: Joi.string().required().min(4),
     name: Joi.string().required().min(2).max(30),
   }),
 });
