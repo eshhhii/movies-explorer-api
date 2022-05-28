@@ -8,9 +8,12 @@ const {
   ERROR_MESSAGE_403,
 } = require('../utils/constants');
 
-const getMovies = (req, res, next) => Movie.find({owner: req.user._id})
+const getMovies = (req, res, next) => {
+  const userId = req.user._id;
+  Movie.find({userId})
   .then((movies) => res.status(200).send(movies))
   .catch(next);
+}
 
 const createMovie = (req, res, next) => {
   const {
