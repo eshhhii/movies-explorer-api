@@ -2,7 +2,6 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
-const cors = require("cors");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 const { errors } = require("celebrate");
@@ -18,8 +17,15 @@ const mainRouter = require("./routes/index");
 const limiter = rateLimit(rateLimiter);
 const app = express();
 
-const options = {
-  origin: [
+// Подлключаемся к БД
+mongoose.connect(CURRENT_MONGO, {
+  useNewUrlParser: true,
+  useCreateIndex: true,
+  useFindAndModify: false,
+  useUnifiedTopology: true,
+});
+
+const allowedCors = [
     "localhost:3000",
     "http://localhost:3000",
     "localhost:3001",
@@ -28,22 +34,14 @@ const options = {
     "http://api.eshhhii-diploma.nomoredomains.rocks",
     "https://eshhhii-diploma.nomoredomains.xyz",
     "http://eshhhii-diploma.nomoredomains.xyz",
-  ],
-  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-  preflightContinue: false,
-  optionsSuccessStatus: 204,
-  allowedHeaders: ["Content-Type", "origin", "Authorization", "Accept"],
-  credentials: true,
-};
-
-app.use("*", cors());
+  ];
 
 app.use(requestLogger);
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-/* app.use((req, res, next) => {
+app.use((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -58,9 +56,8 @@ app.use(express.urlencoded({ extended: true }));
 
     return res.status(200).send();
   }
-
   return next();
-}); */
+}); 
 
 app.use(helmet());
 
