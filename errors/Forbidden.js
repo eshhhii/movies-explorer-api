@@ -1,4 +1,4 @@
-const { ERROR_CODE_403 } = require('../utils/constants');
+const { ERROR_CODE_403 } = require("../utils/constants");
 
 class Forbidden extends Error {
   constructor(message) {

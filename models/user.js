@@ -1,9 +1,9 @@
-const mongoose = require('mongoose');
-const validator = require('validator');
-const bcrypt = require('bcrypt');
+const mongoose = require("mongoose");
+const validator = require("validator");
+const bcrypt = require("bcrypt");
 
-const BadAuth = require('../errors/BadAuth');
-const { ERROR_MESSAGE_EMAIL, ERROR_MESSAGE_INVALID } = require('../utils/constants');
+const BadAuth = require("../errors/BadAuth");
+const { ERROR_MESSAGE_EMAIL, ERROR_MESSAGE_INVALID } = require("../utils/constants");
 
 const userSchema = new mongoose.Schema({
   email: {
@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema({
 });
 
 function findUserByCredentials(email, password) {
-  return this.findOne({ email }).select('+password')
+  return this.findOne({ email }).select("+password")
     .then((user) => {
       if (!user) {
         throw new BadAuth(ERROR_MESSAGE_EMAIL);
@@ -46,4 +46,4 @@ function findUserByCredentials(email, password) {
 
 userSchema.statics.findUserByCredentials = findUserByCredentials;
 
-module.exports = mongoose.model('user', userSchema);
+module.exports = mongoose.model("user", userSchema);

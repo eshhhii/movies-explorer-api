@@ -1,49 +1,49 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
-const cors = require('cors');
-const helmet = require('helmet');
-const rateLimit = require('express-rate-limit');
-const { errors } = require('celebrate');
+require("dotenv").config();
+const express = require("express");
+const mongoose = require("mongoose");
+const bodyParser = require("body-parser");
+const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
+const { errors } = require("celebrate");
 
-const { requestLogger, errorLogger } = require('./middlewares/logger');
-const { notFoundPage } = require('./middlewares/notFoundPage');
-const { handleError } = require('./middlewares/handleError');
-const { rateLimiter } = require('./utils/limiter');
-const { CURRENT_MONGO, CURRENT_PORT } = require('./utils/config');
+const { requestLogger, errorLogger } = require("./middlewares/logger");
+const { notFoundPage } = require("./middlewares/notFoundPage");
+const { handleError } = require("./middlewares/handleError");
+const { rateLimiter } = require("./utils/limiter");
+const { CURRENT_MONGO, CURRENT_PORT } = require("./utils/config");
 
-const mainRouter = require('./routes/index');
+const mainRouter = require("./routes/index");
 
 const limiter = rateLimit(rateLimiter);
 const app = express();
 
 const options = {
   origin: [
-  "localhost:3000",
-  "http://localhost:3000",
-  "localhost:3001",
-  "http://localhost:3001",
-  "https://api.eshhhii-diploma.nomoredomains.rocks",
-  "http://api.eshhhii-diploma.nomoredomains.rocks",
-  "https://eshhhii-diploma.nomoredomains.xyz",
-  "http://eshhhii-diploma.nomoredomains.xyz",
-],
-methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
-preflightContinue: false,
-optionsSuccessStatus: 204,
-allowedHeaders: ["Content-Type", "origin", "Authorization", "Accept"],
-credentials: true,
+    "localhost:3000",
+    "http://localhost:3000",
+    "localhost:3001",
+    "http://localhost:3001",
+    "https://api.eshhhii-diploma.nomoredomains.rocks",
+    "http://api.eshhhii-diploma.nomoredomains.rocks",
+    "https://eshhhii-diploma.nomoredomains.xyz",
+    "http://eshhhii-diploma.nomoredomains.xyz",
+  ],
+  methods: ["GET", "HEAD", "PUT", "PATCH", "POST", "DELETE"],
+  preflightContinue: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: ["Content-Type", "origin", "Authorization", "Accept"],
+  credentials: true,
 };
 
-app.use("*", cors(options));
+app.use("*", cors());
 
 app.use(requestLogger);
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
 
-/*app.use((req, res, next) => {
+/* app.use((req, res, next) => {
   const { origin } = req.headers;
   const { method } = req;
   const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -60,7 +60,7 @@ app.use(express.urlencoded({ extended: true }));
   }
 
   return next();
-});*/
+}); */
 
 app.use(helmet());
 
@@ -74,8 +74,8 @@ mongoose.connect(CURRENT_MONGO, {
 
 app.use(express.json());
 
-app.use('/', mainRouter);
-app.all('*', notFoundPage);
+app.use("/", mainRouter);
+app.all("*", notFoundPage);
 app.use(errorLogger);
 app.use(errors());
 app.use(handleError);

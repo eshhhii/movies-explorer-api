@@ -1,18 +1,18 @@
-const bcrypt = require('bcrypt');
-const jwt = require('jsonwebtoken');
+const bcrypt = require("bcrypt");
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/user');
-const NotFound = require('../errors/NotFound');
-const BadUnique = require('../errors/BadUnique');
-const BadAuth = require('../errors/BadAuth');
+const User = require("../models/user");
+const NotFound = require("../errors/NotFound");
+const BadUnique = require("../errors/BadUnique");
+const BadAuth = require("../errors/BadAuth");
 const {
   ERROR_MESSAGE_USERNOTFOUND,
   ERROR_MESSAGE_AUTHORIZATION,
   ERROR_MESSAGE_CREATUSER,
   ERROR_MESSAGE_UPDATEUSER,
   ERROR_MESSAGE_SUCCESSCREATEUSER,
-} = require('../utils/constants');
-const { CURRENT_JWT_SECRET } = require('../utils/config');
+} = require("../utils/constants");
+const { CURRENT_JWT_SECRET } = require("../utils/config");
 
 const { NODE_ENV, JWT_SECRET } = process.env;
 
@@ -59,7 +59,7 @@ const createUser = (req, res, next) => {
       user: { _id, email, name },
     }))
     .catch((err) => {
-      if (err.name === 'MongoError' && err.code === 11000) {
+      if (err.name === "MongoError" && err.code === 11000) {
         throw new BadUnique(ERROR_MESSAGE_CREATUSER);
       }
       throw err;
@@ -72,7 +72,7 @@ const login = (req, res, next) => {
 
   return User.findUserByCredentials(email, password)
     .then((user) => {
-      const token = jwt.sign({ _id: user._id }, NODE_ENV === 'production' ? JWT_SECRET : CURRENT_JWT_SECRET, { expiresIn: '7d' });
+      const token = jwt.sign({ _id: user._id }, NODE_ENV === "production" ? JWT_SECRET : CURRENT_JWT_SECRET, { expiresIn: "7d" });
 
       return res.send({ token });
     })

@@ -1,14 +1,14 @@
-const Movie = require('../models/movie');
-const NotFound = require('../errors/NotFound');
-const BadRequest = require('../errors/BadRequest');
-const Forbidden = require('../errors/Forbidden');
+const Movie = require("../models/movie");
+const NotFound = require("../errors/NotFound");
+const BadRequest = require("../errors/BadRequest");
+const Forbidden = require("../errors/Forbidden");
 const {
   ERROR_MESSAGE_INVALID,
   ERROR_MESSAGE_FILMNOTFOUND,
   ERROR_MESSAGE_403,
-} = require('../utils/constants');
+} = require("../utils/constants");
 
-const getMovies = (req, res, next) => Movie.find({owner: req.user._id})
+const getMovies = (req, res, next) => Movie.find({ owner: req.user._id })
   .then((movies) => res.status(200).send(movies))
   .catch(next);
 
@@ -49,7 +49,7 @@ const createMovie = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'ValidationError') {
+      if (err.name === "ValidationError") {
         next(new BadRequest(ERROR_MESSAGE_INVALID));
       } else {
         next(err);
@@ -75,7 +75,7 @@ const deleteMovie = (req, res, next) => {
         })
         .then((movieData) => res.send({ data: movieData }))
         .catch((err) => {
-          if (err.name === 'ValidationError' || err.name === 'CastError') {
+          if (err.name === "ValidationError" || err.name === "CastError") {
             next(new BadRequest(ERROR_MESSAGE_INVALID));
           } else {
             next();

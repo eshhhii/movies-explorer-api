@@ -1,4 +1,4 @@
-const { ERROR_CODE_500 } = require('../utils/constants');
+const { ERROR_CODE_500 } = require("../utils/constants");
 
 class Default extends Error {
   constructor(message) {

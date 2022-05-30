@@ -1,7 +1,7 @@
-const { celebrate, Joi } = require('celebrate');
-const validator = require('validator');
+const { celebrate, Joi } = require("celebrate");
+const validator = require("validator");
 
-const { ERROR_MESSAGE_EMAIL, ERROR_MESSAGE_LINK } = require('../utils/constants');
+const { ERROR_MESSAGE_EMAIL, ERROR_MESSAGE_LINK } = require("../utils/constants");
 
 const validatorEmail = (value) => {
   const isValid = validator.isEmail(value);

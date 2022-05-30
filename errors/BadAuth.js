@@ -1,4 +1,4 @@
-const { ERROR_CODE_401 } = require('../utils/constants');
+const { ERROR_CODE_401 } = require("../utils/constants");
 
 class BadAuth extends Error {
   constructor(message) {

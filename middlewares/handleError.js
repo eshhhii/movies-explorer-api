@@ -1,4 +1,4 @@
-const { ERROR_MESSAGE_500, ERROR_CODE_500 } = require('../utils/constants');
+const { ERROR_MESSAGE_500, ERROR_CODE_500 } = require("../utils/constants");
 
 const handleError = (err, req, res, next) => {
   const { statusCode = ERROR_CODE_500, message } = err;
