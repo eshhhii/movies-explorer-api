@@ -34,14 +34,6 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use(helmet());
 
-// Подлключаемся к БД
-mongoose.connect(CURRENT_MONGO, {
-  useNewUrlParser: true,
-  useCreateIndex: true,
-  useFindAndModify: false,
-  useUnifiedTopology: true,
-});
-
 app.use(express.json());
 
 app.use("/", mainRouter);
