@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const helmet = require("helmet");
+const cors = require("cors");
 const rateLimit = require("express-rate-limit");
 const { errors } = require("celebrate");
 
@@ -25,39 +26,11 @@ mongoose.connect(CURRENT_MONGO, {
   useUnifiedTopology: true,
 });
 
-const allowedCors = [
-    "localhost:3000",
-    "http://localhost:3000",
-    "localhost:3001",
-    "http://localhost:3001",
-    "https://api.eshhhii-diploma.nomoredomains.rocks",
-    "http://api.eshhhii-diploma.nomoredomains.rocks",
-    "https://eshhhii-diploma.nomoredomains.xyz",
-    "http://eshhhii-diploma.nomoredomains.xyz",
-  ];
-
+app.use(cors());
 app.use(requestLogger);
 app.use(limiter);
 app.use(bodyParser.json());
 app.use(express.urlencoded({ extended: true }));
-
-app.use((req, res, next) => {
-  const { origin } = req.headers;
-  const { method } = req;
-  const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
-  const requestHeaders = req.headers['access-control-request-headers'];
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', origin);
-    res.header('Access-Control-Allow-Credentials', 'true');
-  }
-  if (method === 'OPTIONS') {
-    res.header('Access-Control-Allow-Methods', DEFAULT_ALLOWED_METHODS);
-    res.header('Access-Control-Allow-Headers', requestHeaders);
-
-    return res.status(200).send();
-  }
-  return next();
-}); 
 
 app.use(helmet());
 
